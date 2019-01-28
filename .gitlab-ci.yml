@@ -1,0 +1,22 @@
+image: node:4.2.2
+
+# variable can also be set as secret
+variables:
+  HOST: "ftp host"
+  USERNAME: "gebruikersnaam"
+  PASSWORD: "Wachtwoord"
+
+
+pages:
+  stage: deploy
+  script:
+  - npm install -g markdown-styles -y 
+  - generate-md  --input ./ --output ./output --layout mixu-bootstrap-2col
+  - cd output
+  - pwd
+  - ls
+  - apt-get update -qq && apt-get install -y -qq lftp
+  - lftp -c  "set ftp:ssl-allow no; open -u $USERNAME,$PASSWORD $HOST; mirror -Rnev ./ ./www  -e --delete-first --parallel=10 --exclude-glob .git* --exclude .sh --exclude .gitlab-ci.yml --exclude /node_modules/*" 
+  only:
+   - master
+
