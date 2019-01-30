@@ -3,7 +3,7 @@
 ### Setting up ftp 
 
 To upload files to the ftp server, use the following values. 
-For public projects, see [Gitlab documentation](https://docs.gitlab.com/ee/ci/variables/#variables)
+For public projects, see [Gitlab documentation](https://docs.gitlab.com/ee/ci/variables/#variables).
 
 `HOST: "your FTP host"`
 
@@ -11,7 +11,7 @@ For public projects, see [Gitlab documentation](https://docs.gitlab.com/ee/ci/va
 
 `PASSWORD: "your FTP password"`
 
-To change the `upload` location    
+To change the upload location, simply change the `myfolderlocation`.
 
 lftp -c  "set ftp:ssl-allow no; open -u $USERNAME,$PASSWORD $HOST; mirror -Rnev ./ `./myfolderlocation`  -e --delete-first --parallel=10 --exclude-glob .git* --exclude .sh --exclude .gitlab-ci.yml 
 --exclude /node_modules/*" 
